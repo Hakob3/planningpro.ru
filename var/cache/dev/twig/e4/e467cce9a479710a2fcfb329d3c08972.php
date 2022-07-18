@@ -99,7 +99,7 @@ class __TwigTemplate_0efc868a12412e6d27c7800bb2b787c4 extends Template
                 <a class=\"nav-link\" href=\"";
         // line 31
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_register");
-        echo "\">Register</a>
+        echo "\">Registration</a>
             </li>
         </NonAmpContent>
     </ul>
@@ -240,7 +240,7 @@ class __TwigTemplate_0efc868a12412e6d27c7800bb2b787c4 extends Template
                 <li><a class=\"nav-link\" href=\"{{ path('app_login') }}\">Login</a></li>
             {% endif %}
             <li>
-                <a class=\"nav-link\" href=\"{{ path('app_register') }}\">Register</a>
+                <a class=\"nav-link\" href=\"{{ path('app_register') }}\">Registration</a>
             </li>
         </NonAmpContent>
     </ul>

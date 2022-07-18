@@ -35,23 +35,41 @@ class DashboardController extends AbstractDashboardController
 //         if ('mymail@mail.com' === $this->getUser()->getUsername()) {
 //             return $this->redirectToRoute('...');
 //         }
+        $records = [];
 
-        $records = $recordRepository->findAll();
+        $recordsRaw = $recordRepository->findAll();
+        foreach ($recordsRaw as $recordRaw) {
+            $records[] = [
+                'id' => $recordRaw->getId(),
+                'text' => $recordRaw->getText(),
+                'email' => $recordRaw->getEmail(),
+                'image' => $recordRaw->getImage(),
+                'color' => $recordRaw->getColor()->getColor(),
+                'geometry' => $recordRaw->getGeometry()->getGeometry()
+            ];
+        }
 
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-         return $this->render('admin/test.html.twig', [
-             'records' => $records
-         ]);
+        return $this->render('admin/test.html.twig', [
+            'records' => $records
+        ]);
     }
 
     #[Route('/record/{id}', name: 'record_id')]
-    public function task_success($id, ManagerRegistry $doctrine): Response
+    public function task_success($id, RecordRepository $recordRepository): Response
     {
-        $repository = $doctrine->getRepository(Record::class);
+        $recordRaw = $recordRepository->find($id);
 
-        $record = $repository->find($id);
+        $record = [
+            'id' => $recordRaw->getId(),
+            'text' => $recordRaw->getText(),
+            'email' => $recordRaw->getEmail(),
+            'image' => $recordRaw->getImage(),
+            'color' => $recordRaw->getColor()->getColor(),
+            'geometry' => $recordRaw->getGeometry()->getGeometry()
+        ];
 
         return $this->render('admin/record.html.twig', [
             'record' => $record,

@@ -20,14 +20,16 @@ class Record
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $color = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $geometry = null;
-
     #[ORM\Column]
     private ?string $image;
+
+    #[ORM\ManyToOne(inversedBy: 'records')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Colors $color = null;
+
+    #[ORM\ManyToOne(inversedBy: 'records')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Geometry $geometry = null;
 
     public function getId(): ?int
     {
@@ -58,30 +60,6 @@ class Record
         return $this;
     }
 
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    public function getGeometry(): ?string
-    {
-        return $this->geometry;
-    }
-
-    public function setGeometry(string $geometry): self
-    {
-        $this->geometry = $geometry;
-
-        return $this;
-    }
-
     public function getImage(): ?string
     {
         return $this->image;
@@ -90,6 +68,30 @@ class Record
     public function setImage($image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getColor(): ?Colors
+    {
+        return $this->color;
+    }
+
+    public function setColor(?Colors $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getGeometry(): ?Geometry
+    {
+        return $this->geometry;
+    }
+
+    public function setGeometry(?Geometry $geometry): self
+    {
+        $this->geometry = $geometry;
 
         return $this;
     }

@@ -30,15 +30,18 @@ class TaskController extends AbstractController
         $colorsArr = [];
         $geometryArr = [];
 
-        $colors = $colorsRepository->findAtColumn();
-        $geometries = $geometryRepository->findAtColumn();
+        $colors = $colorsRepository->findAll();
+        $geometries = $geometryRepository->findAll();
 
+
+//        var_dump($colors);
+//        var_dump($geometries);
         foreach ($colors as $color) {
-            $colorsArr[$color['color']] = $color['color'];
+            $colorsArr[$color->getColor()] = $color->getId();
         }
 
         foreach ($geometries as $geometry) {
-            $geometryArr[$geometry['geometry']] = $geometry['geometry'];
+            $geometryArr[$geometry->getGeometry()] = $geometry->getId();
         }
 
         $task = new Task();
@@ -59,7 +62,7 @@ class TaskController extends AbstractController
 
             $date = date('d/m/Y-H:i:s');
 
-            $someNewFilename = 'image' . $date;
+            $someNewFilename = 'image' . $date .'.jpg';
 
             $directory = '../public/images';
 
@@ -70,8 +73,8 @@ class TaskController extends AbstractController
             $taskTable = new Record();
             $taskTable->setText($task->getText());
             $taskTable->setEmail($task->getEmail());
-            $taskTable->setColor($task->getColor());
-            $taskTable->setGeometry($task->getGeometry());
+            $taskTable->setColor($colorsRepository->find($task->getColor()));
+            $taskTable->setGeometry($geometryRepository->find($task->getGeometry()));
             $taskTable->setImage($task->getImages());
 
             $errors = $validator->validate($taskTable);
