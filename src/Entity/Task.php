@@ -1,5 +1,4 @@
 <?php
-// src/Entity/Task.php
 namespace App\Entity;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +14,8 @@ class Task
     protected $email;
     protected $images;
 //    protected $date;
-    protected $color;
-    protected $geometry;
+    protected ?Colors $color;
+    protected ?Geometry $geometry;
 
     public function getText(): string
     {
@@ -28,22 +27,22 @@ class Task
         $this->text = $text;
     }
 
-    public function getGeometry(): string
+    public function getGeometry(): ?Geometry
     {
         return $this->geometry;
     }
 
-    public function setGeometry(string $geometry): void
+    public function setGeometry(?Geometry $geometry): void
     {
         $this->geometry = $geometry;
     }
 
-    public function getColor(): string
+    public function getColor(): ?Colors
     {
         return $this->color;
     }
 
-    public function setColor(string $color): void
+    public function setColor(?Colors $color): void
     {
         $this->color = $color;
     }

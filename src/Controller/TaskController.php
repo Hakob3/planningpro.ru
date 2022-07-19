@@ -25,33 +25,11 @@ class TaskController extends AbstractController
     #[Route('/task/new', name: 'task_success')]
     public function new(Request $request, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
-        $colorsRepository = $doctrine->getRepository(Colors::class);
-        $geometryRepository = $doctrine->getRepository(Geometry::class);
-        $colorsArr = [];
-        $geometryArr = [];
-
-        $colors = $colorsRepository->findAll();
-        $geometries = $geometryRepository->findAll();
-
-
-//        var_dump($colors);
-//        var_dump($geometries);
-        foreach ($colors as $color) {
-            $colorsArr[$color->getColor()] = $color->getId();
-        }
-
-        foreach ($geometries as $geometry) {
-            $geometryArr[$geometry->getGeometry()] = $geometry->getId();
-        }
-
         $task = new Task();
         $task->setText('Write a blog post');
         $task->setEmail('myemail@example.com');
 
         $form = $this->createForm(TaskType::class, $task);
-        $form->add('color', ChoiceType::class, ['choices' => $colorsArr])
-            ->add('geometry', ChoiceType::class, ['choices' => $geometryArr])
-            ->add('save', SubmitType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,19 +48,19 @@ class TaskController extends AbstractController
             $file->move($directory, $someNewFilename);
 
 
-            $taskTable = new Record();
-            $taskTable->setText($task->getText());
-            $taskTable->setEmail($task->getEmail());
-            $taskTable->setColor($colorsRepository->find($task->getColor()));
-            $taskTable->setGeometry($geometryRepository->find($task->getGeometry()));
-            $taskTable->setImage($task->getImages());
+            $record = new Record();
+            $record->setText($task->getText());
+            $record->setEmail($task->getEmail());
+            $record->setColor($task->getColor());
+            $record->setGeometry($task->getGeometry());
+            $record->setImage($task->getImages());
 
-            $errors = $validator->validate($taskTable);
+            $errors = $validator->validate($record);
             if (count($errors) > 0) {
                 return new Response((string)$errors, 400);
             }
 
-            $entityManager->persist($taskTable);
+            $entityManager->persist($record);
             $entityManager->flush();
 
             return $this->redirectToRoute('task_success');

@@ -2,16 +2,15 @@
 // src/Form/Type/TaskType.php
 namespace App\Form\Type;
 
+use App\Entity\Geometry;
 use Symfony\Component\Form\AbstractType;
 use App\Entity\Task;
-use App\Controller\ColorController;
-use App\Form\CategoryType;
 use App\Entity\Colors;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Repository\ColorsRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,16 +34,16 @@ class TaskType extends AbstractType
                     'accept' => '.jpg,.png',
                     'multiple' => true
                 ]
-            ]);
-    }
-
-    public function getColors()
-    {
-        $colors = new ColorsRepository();
-
-        $colors->findAtColumn();
-
-        return $colors;
+            ])
+            ->add('color', EntityType::class, [
+                'class' => Colors::class,
+                'choice_label' => 'color'
+            ])
+            ->add('geometry', EntityType::class, [
+                'class' => Geometry::class,
+                'choice_label' => 'geometry',
+            ])
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
