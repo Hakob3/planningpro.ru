@@ -1,16 +1,14 @@
 <?php
-// src/Controller/TaskController.php
+
 namespace App\Controller;
 
-use App\Entity\Colors;
-use App\Entity\Geometry;
 use App\Entity\Record;
-use App\Entity\Task;
-use App\Form\Type\TaskType;
+use App\Form\Type\RecordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Service\FileUploader;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,47 +16,43 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
-class TaskController extends AbstractController
+class RecordController extends AbstractController
 {
 
-    #[Route('/task/new', name: 'task_success')]
-    public function new(Request $request, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
+    #[Route('/new_record', name: 'task_success')]
+    public function new(Request $request, ManagerRegistry $doctrine, ValidatorInterface $validator, FileUploader $fileUploader): Response
     {
-        $task = new Task();
-        $task->setText('Write a blog post');
-        $task->setEmail('myemail@example.com');
+        $record = new Record();
+        $record->setText('Write a blog post');
+        $record->setEmail('myemail@example.com');
 
-        $form = $this->createForm(TaskType::class, $task);
+        $form = $this->createForm(RecordType::class, $record);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $task = $form->getData();
+            $recordData = $form->getData();
 
-            $entityManager = $doctrine->getManager();
+            $images = $form->get('images')->getData();
 
-            $date = date('d/m/Y-H:i:s');
-
-            $someNewFilename = 'image' . $date .'.jpg';
-
-            $directory = '../public/images';
-
-            $file = $form['images']->getData();
-            $file->move($directory, $someNewFilename);
-
-
-            $record = new Record();
-            $record->setText($task->getText());
-            $record->setEmail($task->getEmail());
-            $record->setColor($task->getColor());
-            $record->setGeometry($task->getGeometry());
-            $record->setImage($task->getImages());
+            $record->setText($recordData->getText());
+            $record->setEmail($recordData->getEmail());
+            $record->setColor($recordData->getColor());
+            $record->setGeometry($recordData->getGeometry());
+            foreach ($images as $image) {
+                $newFilename = $fileUploader->upload($image);
+                $record->setImages($newFilename);
+            }
 
             $errors = $validator->validate($record);
             if (count($errors) > 0) {
                 return new Response((string)$errors, 400);
             }
+            $entityManager = $doctrine->getManager();
 
             $entityManager->persist($record);
             $entityManager->flush();
@@ -66,7 +60,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task_success');
         }
 
-        return $this->renderForm('task/new.html.twig', [
+        return $this->renderForm('record/new.html.twig', [
             'form' => $form,
         ]);
     }

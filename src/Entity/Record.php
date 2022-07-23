@@ -21,7 +21,7 @@ class Record
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?string $image;
+    private array $images = [];
 
     #[ORM\ManyToOne(inversedBy: 'records')]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,14 +60,14 @@ class Record
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImages(): array
     {
-        return $this->image;
+        return $this->images;
     }
 
-    public function setImage($image): self
+    public function setImages($images): self
     {
-        $this->image = $image;
+        $this->images[] = $images;
 
         return $this;
     }

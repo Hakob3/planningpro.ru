@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Colors;
 use App\Entity\Geometry;
 use App\Repository\ColorsRepository;
-use App\Form\Type\TaskType;
+use App\Form\Type\RecordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Persistence\ManagerRegistry;

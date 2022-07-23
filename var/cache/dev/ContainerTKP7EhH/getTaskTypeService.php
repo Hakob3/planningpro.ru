@@ -11,16 +11,16 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 class getTaskTypeService extends App_KernelDevDebugContainer
 {
     /**
-     * Gets the private 'App\Form\Type\TaskType' shared autowired service.
+     * Gets the private 'App\Form\Type\RecordType' shared autowired service.
      *
-     * @return \App\Form\Type\TaskType
+     * @return \App\Form\Type\RecordType
      */
     public static function do($container, $lazyLoad = true)
     {
         include_once \dirname(__DIR__, 4).'/vendor/symfony/form/FormTypeInterface.php';
         include_once \dirname(__DIR__, 4).'/vendor/symfony/form/AbstractType.php';
-        include_once \dirname(__DIR__, 4).'/src/Form/Type/TaskType.php';
+        include_once \dirname(__DIR__, 4) . '/src/Form/Type/RecordType.php';
 
-        return $container->privates['App\\Form\\Type\\TaskType'] = new \App\Form\Type\TaskType();
+        return $container->privates['App\\Form\\Type\\RecordType'] = new \App\Form\Type\RecordType();
     }
 }

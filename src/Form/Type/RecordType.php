@@ -1,10 +1,9 @@
 <?php
-// src/Form/Type/TaskType.php
 namespace App\Form\Type;
 
 use App\Entity\Geometry;
+use App\Entity\Record;
 use Symfony\Component\Form\AbstractType;
-use App\Entity\Task;
 use App\Entity\Colors;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,25 +14,24 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
-class TaskType extends AbstractType
+class RecordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-//        var_dump($this->getColors());
-
         $builder
             ->add('text', TextareaType::class)
             ->add('email', TextType::class, [
                 'attr' => ['maxlength' => '255'],
             ])
             ->add('images', FileType::class, [
+                'multiple' => true,
                 'attr' => [
                     'accept' => '.jpg,.png',
-                    'multiple' => true
-                ]
+                    'multiple' => 'multiple',
+                ],
+                'mapped' => false,
             ])
             ->add('color', EntityType::class, [
                 'class' => Colors::class,
@@ -49,7 +47,7 @@ class TaskType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Task::class,
+            'data_class' => Record::class,
         ]);
     }
 }

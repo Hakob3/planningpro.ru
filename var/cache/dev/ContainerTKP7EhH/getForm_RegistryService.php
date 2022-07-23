@@ -27,7 +27,7 @@ class getForm_RegistryService extends App_KernelDevDebugContainer
 
         return $container->privates['form.registry'] = new \Symfony\Component\Form\FormRegistry([0 => new \Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension(new \Symfony\Component\DependencyInjection\Argument\ServiceLocator($container->getService, [
             'App\\Form\\RegistrationFormType' => ['privates', 'App\\Form\\RegistrationFormType', 'getRegistrationFormTypeService', true],
-            'App\\Form\\Type\\TaskType' => ['privates', 'App\\Form\\Type\\TaskType', 'getTaskTypeService', true],
+            'App\\Form\\Type\\RecordType' => ['privates', 'App\\Form\\Type\\RecordType', 'getTaskTypeService', true],
             'App\\Form\\UserType' => ['privates', 'App\\Form\\UserType', 'getUserTypeService', true],
             'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\CrudFormType' => ['privates', 'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\CrudFormType', 'getCrudFormTypeService', true],
             'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\FileUploadType' => ['privates', 'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\FileUploadType', 'getFileUploadTypeService', true],
@@ -39,7 +39,7 @@ class getForm_RegistryService extends App_KernelDevDebugContainer
             'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType' => ['privates', 'form.type.form', 'getForm_Type_FormService', true],
         ], [
             'App\\Form\\RegistrationFormType' => '?',
-            'App\\Form\\Type\\TaskType' => '?',
+            'App\\Form\\Type\\RecordType' => '?',
             'App\\Form\\UserType' => '?',
             'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\CrudFormType' => '?',
             'EasyCorp\\Bundle\\EasyAdminBundle\\Form\\Type\\FileUploadType' => '?',
