@@ -21,6 +21,7 @@ class Record
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private array $images = [];
 
     #[ORM\ManyToOne(inversedBy: 'records')]

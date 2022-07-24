@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,10 @@ class RecordType extends AbstractType
                     'accept' => '.jpg,.png',
                     'multiple' => 'multiple',
                 ],
+                'constraints' => [new Count([
+                    'max' => 4,
+                    'maxMessage' => 'You cannot specify more than {{ limit }} images'
+                    ])],
                 'mapped' => false,
             ])
             ->add('color', EntityType::class, [

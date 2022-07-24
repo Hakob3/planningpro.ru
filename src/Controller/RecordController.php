@@ -47,7 +47,6 @@ class RecordController extends AbstractController
                 $newFilename = $fileUploader->upload($image);
                 $record->setImages($newFilename);
             }
-
             $errors = $validator->validate($record);
             if (count($errors) > 0) {
                 return new Response((string)$errors, 400);
