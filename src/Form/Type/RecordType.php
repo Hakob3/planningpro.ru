@@ -34,7 +34,7 @@ class RecordType extends AbstractType
                 ],
                 'constraints' => [new Count([
                     'max' => 4,
-                    'maxMessage' => 'You cannot specify more than {{ limit }} images'
+                    'maxMessage' => 'you cannot upload more than {{ limit }} images'
                     ])],
                 'mapped' => false,
             ])
