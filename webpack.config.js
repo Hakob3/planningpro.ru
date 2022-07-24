@@ -1,5 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
-
+const $ = require('jquery');
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -7,6 +7,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+
+    .autoProvidejQuery()
+
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -73,3 +76,13 @@ Encore
 ;
 
 module.exports = Encore.getWebpackConfig();
+
+$(function(){
+    $('#record_save').click(function(){
+        console.log('error')
+        var $fileUpload = $("input[type='file']");
+        if (parseInt($fileUpload.get(0).files.length)>2){
+            alert("You can only upload a maximum of 2 files");
+        }
+    });
+});
